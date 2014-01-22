@@ -1,45 +1,46 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>A minimal client router</title>
-  <script type="text/html" id="home">
-    <h1>Homepage</h1>
-  </script>
-  <script type="text/html" id="template1">
-    <h1>Page 1: <%= heading %></h1>
-    <p><%= moreText %></p>
-  </script>
-  <script type="text/html" id="template2">
-    <h1>Page 2: <%= heading %></h1>
-    <p>Lorem ipsum...</p>
-  </script>
-</head>
-<body>
-  <ul>
-    <li><a href="#">Home</a></li>
-    <li><a href="#/page1">Page 1</a></li>
-    <li><a href="#/page2">Page 2</a></li>
-  </ul>
-  <div id="view"></div>
-  <script src="js/tmpl.js"></script>
-  <script src="js/router.js"></script>
-  <script>
-    
-    route('/', 'home', function () {});
+  <head>
+    <meta charset="utf-8">
+    <title>A minimal client router</title>
+     <script type="text/html" id="HomeView">
+      <h1><%= title %></h1>
+      <p><%= paragraph %></p>
+    </script>
+    <script type="text/html" id="Page1View">
+      <h1><%= heading %></h1>
+      <p><%= paragraph %></p>
+    </script>
+    <script type="text/html" id="Page2View">
+      <h1><%= heading %></h1>
+      <p>Page2 paragraph</p>
+    </script>
+  </head>
+  <body>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#/page1">Page 1</a></li>
+      <li><a href="#/page2">Page 2</a></li>
+    </ul>
+    <div id="MainView"></div>
+    <script src="js/tmpl.js"></script>
+     <script src="js/router.js"></script>
+    <script>
+     Router.route('/', 'HomeView', function () {
+        this.title = 'Homepage title';
+        this.paragraph = 'This is the homepage paragraph';
+      });
+      Router.route('/page1', 'Page1View', function () {
+        this.heading = 'Page1 heading';
+        this.paragraph = 'Loading...';
+        setTimeout(function () {
+          this.paragraph = 'Simulating a XHR call..';
+        }.bind(this), 1000);
+      });
 
-    route('/page1', 'template1', function () {
-      this.heading = 'I\'m page one!';
-      this.moreText = 'Loading...';
-      setTimeout(function () {
-        this.moreText = 'Bacon ipsum...';
-      }.bind(this), 500);
-    });
-
-    route('/page2', 'template2', function () {
-      this.heading = 'I\'m page two!';
-    });
-
-  </script>
-</body>
+      Router.route('/page2', 'Page2View', function () {
+        this.heading = 'Page2 heading';
+      });
+    </script>
+  </body>
 </html>

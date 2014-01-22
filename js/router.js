@@ -1,4 +1,4 @@
-(function () {
+var Router = (function () {
   var routes = {};
   var route = function(path, templateId, controller) {
     if (typeof templateId === 'function') {
@@ -14,12 +14,12 @@
     if (route && !route.templateId) {
       return route.controller ? new route.controller : null;
     }
-    el = el || document.getElementById('view');
-    if (current) {
+    el = el || document.getElementById('MainView');
+    if(current) {
       Object.unobserve(current.controller, current.render);
       current = null;
     }
-    if (el && route && route.controller) {
+    if(el && route && route.controller) {
       current = {
         controller: new route.controller,
         template: tmpl(route.templateId),
@@ -33,6 +33,8 @@
   }
   this.addEventListener('hashchange', router);
   this.addEventListener('load', router);
-  this.route = route;
   
+  return{
+    route:route
+  }
 })();
